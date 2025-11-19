@@ -14,9 +14,9 @@ public class WorkAndEnergyMain extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/welcome.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/application.fxml"));
         Scene scene = new Scene(loader.load());
-        stage.setTitle("Ski Simulator - Work and Energy");
+        stage.setTitle("TEST");
         stage.setScene(scene);
         stage.show();
     }
