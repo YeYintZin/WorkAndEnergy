@@ -1,12 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0"
-            xmlns="http://javafx.com/javafx/22"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="Controller.welcomeController">
-
-    <!-- Add your UI elements here -->
-
-</AnchorPane>
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.welcomeController">
+   <children>
+      <Label layoutX="14.0" layoutY="14.0" prefHeight="86.0" prefWidth="419.0" text="Ski Simulator" textFill="#39399e">
+         <font>
+            <Font name="Bauhaus 93" size="48.0" />
+         </font>
+      </Label>
+      <Label layoutX="202.0" layoutY="53.0" prefHeight="94.0" prefWidth="305.0" text="Work and Energy Calculator" textFill="#39399e">
+         <font>
+            <Font name="Bauhaus 93" size="23.0" />
+         </font>
+      </Label>
+      <Button fx:id="playButton" layoutX="23.0" layoutY="170.0" mnemonicParsing="false" onAction="#playButtonAction" prefHeight="38.0" prefWidth="143.0" text="Play" textFill="#39399e">
+         <font>
+            <Font name="Bauhaus 93" size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="creditsButton" layoutX="23.0" layoutY="240.0" mnemonicParsing="false" onAction="#creditsButtonAction" prefHeight="38.0" prefWidth="143.0" text="Credits" textFill="#39399e">
+         <font>
+            <Font name="Bauhaus 93" size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="exitButton" layoutX="23.0" layoutY="314.0" mnemonicParsing="false" onAction="#exitButtonAction" prefHeight="38.0" prefWidth="143.0" text="Exit" textFill="#39399e">
+         <font>
+            <Font name="Bauhaus 93" size="15.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>

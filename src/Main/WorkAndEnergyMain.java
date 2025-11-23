@@ -14,7 +14,7 @@ public class WorkAndEnergyMain extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/application.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/welcome.fxml"));
         Scene scene = new Scene(loader.load());
         stage.setTitle("TEST");
         stage.setScene(scene);
