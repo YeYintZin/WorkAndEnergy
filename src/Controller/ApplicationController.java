@@ -10,6 +10,7 @@ import javafx.scene.shape.Line;
 import javafx.util.Duration;
 
 public class ApplicationController {
+    private int pathCount;
     
     @FXML
     private Pane application;
@@ -26,8 +27,13 @@ public class ApplicationController {
     
     public void initialize() {
         lineButton.setOnAction(e -> {
+            if (pathCount > 4) {
+                lineButton.setDisable(true);
+                return;
+            }
             lineButton.setStyle("-fx-background-color: red;" + "-fx-text-fill: white;");
             application.setOnMouseClicked(f -> {
+                pathCount++;
                 Line line = new Line(f.getX(), f.getY(), f.getX() + 100, f.getY() + 100);
                 line.setStroke(Color.BLACK);
                 line.setStrokeWidth(3);
@@ -48,12 +54,12 @@ public class ApplicationController {
             
         });
         reset.setOnAction(e -> {
-            resetPressed();
+            for (int i = 1; i < pathCount + 1; i++) {
+                application.getChildren().remove(application.getChildren().size() - i);
+            }
+            pathCount = 0;
+            lineButton.setDisable(false);
         });
-    }
-    
-    private void resetPressed() {
-        System.out.println("reset");
     }
     
     private void countdownHandler() {
