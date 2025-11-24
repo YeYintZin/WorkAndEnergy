@@ -14,7 +14,7 @@
          <children>
             <Pane prefHeight="200.0" prefWidth="150.0" style="-fx-border-color: black;">
                <children>
-                  <Button fx:id="arcButton" layoutX="45.0" layoutY="50.0" mnemonicParsing="false" text="⌒">
+                  <Button fx:id="arcButton" layoutX="45.0" layoutY="50.0" mnemonicParsing="false" style="-fx-background-color: lime; -fx-text-fill: white;" text="⌒">
                      <font>
                         <Font size="26.0" />
                      </font>
