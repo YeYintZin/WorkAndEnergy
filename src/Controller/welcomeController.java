@@ -45,7 +45,7 @@ public class welcomeController {
             
             stage = (Stage) playButton.getScene().getWindow();
             scene = new Scene(root);
-            stage.setTitle("Marathon Simulator");
+            stage.setTitle("Work and Energy Simulator");
             stage.setScene(scene);
             stage.show();
         } catch(IOException ex) {
