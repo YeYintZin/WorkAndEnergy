@@ -31,7 +31,7 @@ public class welcomeController {
     }
     
     public void initialize() {
-        // TODO
+
     }    
     
     public void switchToApplication() {
@@ -40,9 +40,7 @@ public class welcomeController {
             Parent root = loader.load();
 
             ApplicationController controller = loader.getController();
-            
-//            controller.setRunners(runners);
-            
+
             stage = (Stage) playButton.getScene().getWindow();
             scene = new Scene(root);
             stage.setTitle("Work and Energy Simulator");

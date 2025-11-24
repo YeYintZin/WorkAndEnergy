@@ -40,6 +40,7 @@ public class ApplicationController {
                 return;
             }
             lineButton.setStyle("-fx-background-color: red;" + "-fx-text-fill: white;");
+            arcButton.setDisable(true);
             application.setOnMouseClicked(f -> {
                 pathCount++;
                 Line line = new Line(f.getX(), f.getY(), f.getX() + 100, f.getY() + 100);
@@ -49,6 +50,7 @@ public class ApplicationController {
                 application.getChildren().add(line);
                 application.setOnMouseClicked(null);
                 lineButton.setStyle("-fx-background-color: lime;" + "-fx-text-fill: white;");
+                arcButton.setDisable(false);
             });
         });
         arcButton.setOnAction(e -> {
@@ -58,6 +60,7 @@ public class ApplicationController {
                 return;
             }
             arcButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
+            lineButton.setDisable(true);
             application.setOnMouseClicked(f -> {
                 pathCount++;
                 Arc arc = new Arc();
@@ -75,6 +78,7 @@ public class ApplicationController {
                 application.getChildren().add(arc);
                 application.setOnMouseClicked(null);
                 arcButton.setStyle("-fx-background-color: lime; -fx-text-fill: white;");
+                lineButton.setDisable(false);
             });
         });
         start.setOnAction(e -> {
