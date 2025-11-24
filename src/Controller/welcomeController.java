@@ -13,20 +13,12 @@ import javafx.stage.Stage;
 public class welcomeController {
     private Stage stage;
     private Scene scene;
-    
-    @FXML
-    private Button creditsButton;
 
     @FXML
     private Button exitButton;
 
     @FXML
     private Button playButton;
-
-    @FXML
-    void creditsButtonAction(ActionEvent event) {
-
-    }
 
     @FXML
     void exitButtonAction(ActionEvent event) {

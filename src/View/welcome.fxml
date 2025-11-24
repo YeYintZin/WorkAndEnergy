@@ -19,17 +19,12 @@
             <Font name="Bauhaus 93" size="23.0" />
          </font>
       </Label>
-      <Button fx:id="playButton" layoutX="23.0" layoutY="155.0" mnemonicParsing="false" onAction="#playButtonAction" prefHeight="45.0" prefWidth="143.0" style="-fx-background-color: FDE0FF;" text="Play" textFill="#39399e">
+      <Button fx:id="playButton" layoutX="23.0" layoutY="178.0" mnemonicParsing="false" onAction="#playButtonAction" prefHeight="45.0" prefWidth="170.0" style="-fx-background-color: FDE0FF;" text="Play" textFill="#39399e">
          <font>
             <Font name="Bauhaus 93" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="creditsButton" layoutX="23.0" layoutY="227.0" mnemonicParsing="false" onAction="#creditsButtonAction" prefHeight="45.0" prefWidth="143.0" style="-fx-background-color: FDE0FF;" text="Credits" textFill="#39399e">
-         <font>
-            <Font name="Bauhaus 93" size="18.0" />
-         </font>
-      </Button>
-      <Button fx:id="exitButton" layoutX="23.0" layoutY="297.0" mnemonicParsing="false" onAction="#exitButtonAction" prefHeight="45.0" prefWidth="143.0" style="-fx-background-color: FDE0FF;" text="Exit" textFill="#39399e">
+      <Button fx:id="exitButton" layoutX="23.0" layoutY="250.0" mnemonicParsing="false" onAction="#exitButtonAction" prefHeight="45.0" prefWidth="170.0" style="-fx-background-color: FDE0FF;" text="Exit" textFill="#39399e">
          <font>
             <Font name="Bauhaus 93" size="18.0" />
          </font>
@@ -39,5 +34,10 @@
             <Image url="@../images/2808382.png" />
          </image>
       </ImageView>
+      <Label layoutX="355.0" layoutY="377.0" prefHeight="17.0" prefWidth="245.0" text="Made by Ye Yint Zin and Nguyen Tan Alex Le" textFill="#39399e">
+         <font>
+            <Font name="Bauhaus 93" size="12.0" />
+         </font>
+      </Label>
    </children>
 </Pane>
