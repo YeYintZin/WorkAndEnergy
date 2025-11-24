@@ -2,10 +2,12 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.welcomeController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.welcomeController">
    <children>
       <Label layoutX="14.0" layoutY="14.0" prefHeight="86.0" prefWidth="419.0" text="Ski Simulator" textFill="#39399e">
          <font>
@@ -17,20 +19,25 @@
             <Font name="Bauhaus 93" size="23.0" />
          </font>
       </Label>
-      <Button fx:id="playButton" layoutX="23.0" layoutY="170.0" mnemonicParsing="false" onAction="#playButtonAction" prefHeight="38.0" prefWidth="143.0" text="Play" textFill="#39399e">
+      <Button fx:id="playButton" layoutX="23.0" layoutY="155.0" mnemonicParsing="false" onAction="#playButtonAction" prefHeight="45.0" prefWidth="143.0" style="-fx-background-color: FDE0FF;" text="Play" textFill="#39399e">
          <font>
-            <Font name="Bauhaus 93" size="15.0" />
+            <Font name="Bauhaus 93" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="creditsButton" layoutX="23.0" layoutY="240.0" mnemonicParsing="false" onAction="#creditsButtonAction" prefHeight="38.0" prefWidth="143.0" text="Credits" textFill="#39399e">
+      <Button fx:id="creditsButton" layoutX="23.0" layoutY="227.0" mnemonicParsing="false" onAction="#creditsButtonAction" prefHeight="45.0" prefWidth="143.0" style="-fx-background-color: FDE0FF;" text="Credits" textFill="#39399e">
          <font>
-            <Font name="Bauhaus 93" size="15.0" />
+            <Font name="Bauhaus 93" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="exitButton" layoutX="23.0" layoutY="314.0" mnemonicParsing="false" onAction="#exitButtonAction" prefHeight="38.0" prefWidth="143.0" text="Exit" textFill="#39399e">
+      <Button fx:id="exitButton" layoutX="23.0" layoutY="297.0" mnemonicParsing="false" onAction="#exitButtonAction" prefHeight="45.0" prefWidth="143.0" style="-fx-background-color: FDE0FF;" text="Exit" textFill="#39399e">
          <font>
-            <Font name="Bauhaus 93" size="15.0" />
+            <Font name="Bauhaus 93" size="18.0" />
          </font>
       </Button>
+      <ImageView fitHeight="229.0" fitWidth="290.0" layoutX="231.0" layoutY="135.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/2808382.png" />
+         </image>
+      </ImageView>
    </children>
 </Pane>
