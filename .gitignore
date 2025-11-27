@@ -1,1 +1,44 @@
+# =====================
+# Build / Output folders
+# =====================
 /dist/
+/build/
+/target/
+
+# =====================
+# Java class files
+# =====================
+*.class
+
+# =====================
+# Logs
+# =====================
+*.log
+
+# =====================
+# NetBeans private settings (should NOT be versioned)
+# =====================
+/nbproject/private/
+/nbproject/private/*
+
+# Cache files created by NetBeans
+nbproject/*-private.xml
+
+# =====================
+# OS / Editor files
+# =====================
+.DS_Store
+Thumbs.db
+
+# =====================
+# IDE files
+# =====================
+/nb-configuration.xml
+/.idea/
+/*.iml
+.vscode/
+
+# =====================
+# Backup files
+# =====================
+*~
