@@ -22,6 +22,7 @@ public class ApplicationController {
     private Path path = new Path();
     private boolean firstPoint = true;
     private double lastX = -1;
+    private List<PauseTransition> countdowns = new ArrayList<>();
 
     @FXML
     private Pane application;
@@ -109,35 +110,42 @@ public class ApplicationController {
                 pt1.setOnFinished(f -> {
                     errorLabel.setOpacity(0);
                 });
+                return;
+            }
+            countdown.setOpacity(1);
+            PauseTransition pt1 = new PauseTransition(Duration.seconds(1));
+            PauseTransition pt2 = new PauseTransition(Duration.seconds(1));
+            PauseTransition pt3 = new PauseTransition(Duration.seconds(1));
+            PauseTransition pt4 = new PauseTransition(Duration.millis(500));
+            countdowns.add(pt1);
+            countdowns.add(pt2);
+            countdowns.add(pt3);
+            countdowns.add(pt4);
+            pt1.playFromStart();
+            pt1.setOnFinished(f -> {
+                countdown.setText("2");
+                pt2.play();
+            });
+            pt2.setOnFinished(f -> {
+                countdown.setText("1");
+                pt3.play();
+            });
+            pt3.setOnFinished(f -> {
+                countdown.setText("GO!");
+                pt4.play();
+            });
+            pt4.setOnFinished(f -> {
+                countdown.setText("");
+            });
+            if (start.getText().equals("Start")) {
+                start.setText("Stop");
+                reset.setDisable(true);
             } else {
-                countdown.setOpacity(1);
-                PauseTransition pt1 = new PauseTransition(Duration.seconds(1));
-                pt1.play();
-                pt1.setOnFinished(f -> {
-                    countdown.setText("2");
-                    PauseTransition pt2 = new PauseTransition(Duration.seconds(1));
-                    pt1.play();
-                    pt1.setOnFinished(g -> {
-                        countdown.setText("1");
-                        PauseTransition pt3 = new PauseTransition(Duration.seconds(1));
-                        pt1.play();
-                        pt1.setOnFinished(h -> {
-                            countdown.setText("GO!");
-                            PauseTransition pt4 = new PauseTransition(Duration.millis(0.5));
-                            pt1.play();
-                            pt1.setOnFinished(i -> {
-                                countdown.setText("");
-                            });
-                        });
-                    });
-                });
-                if (start.getText().equals("Start")) {
-                    start.setText("Stop");
-                    reset.setDisable(true);
-                } else {
-                    start.setText("Start");
-                    reset.setDisable(false);
+                for (PauseTransition cd : countdowns) {
+                    cd.pause();
                 }
+                start.setText("Start");
+                reset.setDisable(false);
             }
         });
 
@@ -151,6 +159,7 @@ public class ApplicationController {
             lastX = startX;
             lineButton.setDisable(false);
             arcButton.setDisable(false);
+            countdown.setOpacity(0);
         });
 
     }
