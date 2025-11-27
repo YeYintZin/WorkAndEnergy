@@ -41,9 +41,14 @@
             </Pane>
             <Pane fx:id="application" prefHeight="200.0" prefWidth="750.0" style="-fx-border-color: black;">
                <children>
-                  <Label fx:id="countdown" layoutX="300.0" layoutY="230.0" opacity="0.0" text="3">
+                  <Label fx:id="countdown" layoutX="300.0" layoutY="230.0" opacity="0.0" text="3" textAlignment="CENTER">
                      <font>
                         <Font size="96.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="errorLabel" layoutX="175.0" layoutY="255.0" opacity="0.0" prefHeight="91.0" prefWidth="400.0" text="3">
+                     <font>
+                        <Font size="44.0" />
                      </font>
                   </Label>
                </children>
