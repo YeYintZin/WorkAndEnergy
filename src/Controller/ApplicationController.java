@@ -112,6 +112,7 @@ public class ApplicationController {
                 });
                 return;
             }
+            countdown.setText("3");
             countdown.setOpacity(1);
             PauseTransition pt1 = new PauseTransition(Duration.seconds(1));
             PauseTransition pt2 = new PauseTransition(Duration.seconds(1));
@@ -144,6 +145,7 @@ public class ApplicationController {
                 for (PauseTransition cd : countdowns) {
                     cd.pause();
                 }
+                countdown.setOpacity(0);
                 start.setText("Start");
                 reset.setDisable(false);
             }
