@@ -20,8 +20,6 @@ public class ApplicationController {
     private int pathCount;
     private Path path = new Path();
     private Path invispath = new Path();
-    private double startX = 50;
-    private double startY = 100;
     private double lastX = -1;
     private double lastY = -1;
     private List<PauseTransition> countdowns = new ArrayList<>();
@@ -32,6 +30,10 @@ public class ApplicationController {
     private Button lineButton;
     @FXML
     private Label pathCountLabel;
+    @FXML
+    private Pane resultPane;
+    @FXML
+    private Label resultLabel;
     @FXML
     private Button reset;
     @FXML
@@ -80,8 +82,8 @@ public class ApplicationController {
         invispath.setStrokeWidth(3);
         invispath.setFill(null);
         application.getChildren().add(invispath);
-        invispath.getElements().add(new MoveTo(50, 80));
-        Circle startinvisDot = new Circle(50, 80, 3, null);
+        invispath.getElements().add(new MoveTo(50, 75));
+        Circle startinvisDot = new Circle(50, 75, 3, null);
         application.getChildren().add(startinvisDot);
     }
 
@@ -108,6 +110,23 @@ public class ApplicationController {
             invispath.getElements().add(new LineTo(f.getX() + 15, f.getY() - 15));
             application.setOnMouseClicked(null);
             lineButton.setStyle("-fx-background-color: lime; -fx-text-fill: white;");
+        });
+    }
+
+    public void animationHandle() {
+        Circle ball = new Circle();
+        ball.setRadius(20);
+        ball.setStroke(Color.BLACK);
+        ball.setFill(null);
+        application.getChildren().add(ball);
+
+        PathTransition pt = new PathTransition();
+        pt.setDuration(Duration.seconds(5));
+        pt.setPath(invispath);
+        pt.setNode(ball);
+        pt.play();
+        pt.setOnFinished(e -> {
+            showResult();
         });
     }
 
@@ -163,33 +182,30 @@ public class ApplicationController {
             reset.setDisable(false);
         }
     }
-    
-    public void animationHandle() {
-        Circle ball = new Circle();
-        ball.setRadius(20);
-        ball.setStroke(Color.BLACK);
-        ball.setFill(null);
-        application.getChildren().add(ball);
-        
-        PathTransition pt = new PathTransition();
-        pt.setDuration(Duration.seconds(5));
-        pt.setPath(invispath);
-        pt.setNode(ball);
-        pt.play();
+
+    public void showResult() {
+        resultPane.setOpacity(1);
+        resultPane.toFront();
     }
 
     public void resetHandle() {
         path.getElements().clear();
+        invispath.getElements().clear();
         application.getChildren().removeIf(n -> n instanceof Circle);
         pathCount = 0;
-        path.getElements().add(new MoveTo(startX, startY));
-        Circle newStart = new Circle(startX, startY, 3, Color.BLACK);
+        path.getElements().add(new MoveTo(50, 100));
+        invispath.getElements().add(new MoveTo(50, 75));
+        Circle newStart = new Circle(50, 100, 3, Color.BLACK);
         application.getChildren().add(newStart);
-        lastX = startX;
-        lastY = startY;
+        Circle invisnewStart = new Circle(50, 75, 3, Color.BLACK);
+        invisnewStart.setOpacity(0);
+        application.getChildren().add(invisnewStart);
+        lastX = 50;
+        lastY = 100;
         lineButton.setDisable(false);
         countdown.setOpacity(0);
         pathCountLabel.setText("Path required: " + (7 - pathCount));
+        resultPane.setOpacity(0);
     }
 
 }

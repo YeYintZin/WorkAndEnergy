@@ -41,6 +41,11 @@
             </Pane>
             <Pane fx:id="application" prefHeight="200.0" prefWidth="750.0" style="-fx-border-color: black;">
                <children>
+                  <Pane fx:id="resultPane" layoutX="350.0" layoutY="400.0" opacity="0.0" prefHeight="200.0" prefWidth="400.0" style="-fx-border-color: black; -fx-background-color: white;">
+                     <children>
+                        <Label fx:id="resultLabel" layoutX="10.0" prefHeight="42.0" prefWidth="390.0" text="Results:" />
+                     </children>
+                  </Pane>
                   <Label fx:id="countdown" layoutX="300.0" layoutY="230.0" opacity="0.0" text="3" textAlignment="CENTER">
                      <font>
                         <Font size="96.0" />
