@@ -41,4 +41,5 @@ Thumbs.db
 # =====================
 # Backup files
 # =====================
-*~
+*~nbproject/private/
+nbproject/private/private.xml
