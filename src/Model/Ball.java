@@ -1,6 +1,12 @@
 package Model;
 
+import javafx.animation.Timeline;
+
 public class Ball {
+    private double projectileX, projectileY;
+    private double velocityX, velocityY;
+    private final double g = 9.8; // gravity in pixels/sec^2
+    private Timeline projectileTimeline;
     private double mass;
 
     public Ball(double mass) {
@@ -15,7 +21,7 @@ public class Ball {
      * @return Initial Energy of the system, in J
      */
     public double energy(double height) {
-        return mass * 9.8 * height;
+        return mass * g * height;
     }
     
     /**
