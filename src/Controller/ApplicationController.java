@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Ball;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.animation.Animation;
@@ -18,13 +19,15 @@ import javafx.scene.shape.Path;
 import javafx.util.Duration;
 
 public class ApplicationController {
+
     private PathTransition pt;
     private int pathCount;
     private Path path = new Path();
     private Path invispath = new Path();
     private double lastX = -1;
     private double lastY = -1;
-    private List<PauseTransition> countdowns = new ArrayList<>();
+    private List<Double> finalCoordinate = new ArrayList<>();
+    private List<Circle> container = new ArrayList<>();
 
     @FXML
     private Pane application;
@@ -83,28 +86,26 @@ public class ApplicationController {
     }
 
     public void extendPath() {
+        lineButton.setDisable(true);
         if (pathCount >= 7) {
             lineButton.setDisable(true);
             return;
         }
         lineButton.setStyle("-fx-background-color: red; -fx-text-fill: white;");
         application.setOnMouseClicked(f -> {
-            if (f.getX() <= lastX) {
-                return;
-            }
-            if (f.getY() <= lastY) {
+            if (f.getX() <= lastX || f.getY() <= lastY) {
                 return;
             }
             pathCount++;
             path.getElements().add(new LineTo(f.getX(), f.getY()));
             lastX = f.getX();
             lastY = f.getY();
-            application.setOnMouseClicked(null);
-            lineButton.setStyle("-fx-background-color: lime; -fx-text-fill: white;");
             //
             invispath.getElements().add(new LineTo(f.getX() + 15, f.getY() - 15));
-            application.setOnMouseClicked(null);
-            lineButton.setStyle("-fx-background-color: lime; -fx-text-fill: white;");
+            if (pathCount == 7) {
+                application.setOnMouseClicked(null);
+                lineButton.setStyle("-fx-background-color: lime; -fx-text-fill: white;");
+            }
         });
     }
 
@@ -114,37 +115,66 @@ public class ApplicationController {
         ball.setStroke(Color.BLACK);
         ball.setFill(null);
         application.getChildren().add(ball);
+        container.add(ball);
 
         pt = new PathTransition();
-        pt.setDuration(Duration.seconds(5));
+        pt.setDuration(Duration.seconds(2));
         pt.setPath(invispath);
         pt.setNode(ball);
         pt.play();
         pt.setOnFinished(e -> {
-            showResult();
+            projectileAnimation(25);
+        });
+    }
+
+    public void projectileAnimation(double totalTime) {
+        double x0 = finalCoordinate.get(0);
+        double y0 = finalCoordinate.get(1);
+        Ball ball = new Ball(finalCoordinate);
+        double vx = ball.getVelocityX();
+        double vy = ball.getVelocityY();
+        double g = 9.8;
+        Path curvePath = new Path();
+        curvePath.getElements().add(new MoveTo(x0, y0));
+        int steps = 200;
+        double dt = totalTime / steps;
+
+        for (int i = 1; i <= steps; i++) {
+            double t = i * dt;
+            double x = x0 + vx * t;
+            double y = y0 + vy * t + 0.5 * g * t * t;
+            curvePath.getElements().add(new LineTo(x, y));
+        }
+        pt = new PathTransition();
+        pt.setDuration(Duration.seconds(5));
+        pt.setPath(curvePath);
+        pt.setNode(container.getFirst());
+        pt.play();
+        pt.setOnFinished(e -> {
+            showResult(ball);
             start.setText("Start");
             reset.setDisable(false);
         });
     }
-    
+
     public void pauseAnimation() {
         pt.pause();
     }
-    
+
     public void startHandle() {
         if (start.getText().equals("Pause")) {
             pauseAnimation();
             start.setText("Start");
             return;
         }
-        
+
         if (pt != null && pt.getStatus() == Animation.Status.PAUSED) {
             pt.play();
             start.setText("Pause");
             reset.setDisable(true);
             return;
         }
-        
+
         // If path isnt complete
         if (pathCount != 7) {
             errorLabel.setText("Path not complete!");
@@ -156,9 +186,9 @@ public class ApplicationController {
             });
             return;
         }
-        
+
         addSlopeSegment();
-        
+
         // Countdown
         countdown.setText("3");
         countdown.setOpacity(1);
@@ -166,8 +196,7 @@ public class ApplicationController {
         PauseTransition pt2 = new PauseTransition(Duration.seconds(1));
         PauseTransition pt3 = new PauseTransition(Duration.seconds(1));
         PauseTransition pt4 = new PauseTransition(Duration.millis(500));
-        
-        
+
         pt1.playFromStart();
         pt1.setOnFinished(f -> {
             countdown.setText("2");
@@ -189,9 +218,13 @@ public class ApplicationController {
         });
     }
 
-    public void showResult() {
+    public void showResult(Ball ball) {
         resultPane.setOpacity(1);
         resultPane.toFront();
+        resultLabel.setText("Results: \n"
+                + "Velocity in x: " + (Math.round(ball.getVelocityX() * 100)) / 100.00 + " pixels/s \n"  
+                + "Velocity in y: " + (Math.round(ball.getVelocityY() * 100)) / 100.00 +" pixels/s \n" 
+                + "Initial and Final Mechanical energy of the system: " + (Math.round(ball.findEnergy() * 100)) / 100.00  + " J");
     }
 
     public void resetHandle() {
@@ -216,24 +249,27 @@ public class ApplicationController {
     }
 
     private void addSlopeSegment() {
-        double angleDeg = slopeAngle.getValue();   
-        double length   = slopeLength.getValue();
+        double angleDeg = slopeAngle.getValue();
+        double length = slopeLength.getValue();
 
         double angleRad = Math.toRadians(angleDeg);
-        double dx = length * Math.cos(angleRad); 
-        double dy = -length * Math.sin(angleRad);  
+        double dx = length * Math.cos(angleRad);
+        double dy = -length * Math.sin(angleRad);
 
         double startX = lastX;
         double startY = lastY;
 
         double endX = startX + dx;
         double endY = startY + dy;
-        
+        finalCoordinate.add(endX);
+        finalCoordinate.add(endY);
+        finalCoordinate.add(angleDeg);
+
         path.getElements().add(new LineTo(endX, endY));
-        invispath.getElements().add(new LineTo(endX + 15, endY - 15));
-        
+        invispath.getElements().add(new LineTo(endX, endY - 15));
+
         lastX = endX;
         lastY = endY;
     }
-    
+
 }
