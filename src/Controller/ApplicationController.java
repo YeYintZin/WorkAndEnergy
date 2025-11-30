@@ -86,6 +86,7 @@ public class ApplicationController {
     }
 
     public void extendPath() {
+        lineButton.setDisable(true);
         if (pathCount >= 7) {
             lineButton.setDisable(true);
             return;
@@ -99,11 +100,12 @@ public class ApplicationController {
             path.getElements().add(new LineTo(f.getX(), f.getY()));
             lastX = f.getX();
             lastY = f.getY();
-            lineButton.setStyle("-fx-background-color: lime; -fx-text-fill: white;");
             //
             invispath.getElements().add(new LineTo(f.getX() + 15, f.getY() - 15));
-            application.setOnMouseClicked(null);
-            lineButton.setStyle("-fx-background-color: lime; -fx-text-fill: white;");
+            if (pathCount == 7) {
+                application.setOnMouseClicked(null);
+                lineButton.setStyle("-fx-background-color: lime; -fx-text-fill: white;");
+            }
         });
     }
 
@@ -122,9 +124,6 @@ public class ApplicationController {
         pt.play();
         pt.setOnFinished(e -> {
             projectileAnimation(25);
-//            showResult();
-//            start.setText("Start");
-//            reset.setDisable(false);
         });
     }
 
@@ -134,7 +133,7 @@ public class ApplicationController {
         Ball ball = new Ball(finalCoordinate);
         double vx = ball.getVelocityX();
         double vy = ball.getVelocityY();
-        double g = - 9.8;
+        double g = 9.8;
         Path curvePath = new Path();
         curvePath.getElements().add(new MoveTo(x0, y0));
         int steps = 200;
@@ -142,10 +141,8 @@ public class ApplicationController {
 
         for (int i = 1; i <= steps; i++) {
             double t = i * dt;
-
             double x = x0 + vx * t;
-            double y = y0 + vy * t - 0.5 * g * t * t;
-
+            double y = y0 + vy * t + 0.5 * g * t * t;
             curvePath.getElements().add(new LineTo(x, y));
         }
         pt = new PathTransition();
@@ -153,7 +150,11 @@ public class ApplicationController {
         pt.setPath(curvePath);
         pt.setNode(container.getFirst());
         pt.play();
-
+        pt.setOnFinished(e -> {
+            showResult(ball);
+            start.setText("Start");
+            reset.setDisable(false);
+        });
     }
 
     public void pauseAnimation() {
@@ -217,9 +218,13 @@ public class ApplicationController {
         });
     }
 
-    public void showResult() {
+    public void showResult(Ball ball) {
         resultPane.setOpacity(1);
         resultPane.toFront();
+        resultLabel.setText("Results: \n"
+                + "Velocity in x: " + (Math.round(ball.getVelocityX() * 100)) / 100.00 + " pixels/s \n"  
+                + "Velocity in y: " + (Math.round(ball.getVelocityY() * 100)) / 100.00 +" pixels/s \n" 
+                + "Initial and Final Mechanical energy of the system: " + (Math.round(ball.findEnergy() * 100)) / 100.00  + " J");
     }
 
     public void resetHandle() {
