@@ -8,6 +8,7 @@ import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -43,6 +44,10 @@ public class ApplicationController {
     private Label countdown;
     @FXML
     private Label errorLabel;
+    @FXML
+    private Slider slopeAngle;
+    @FXML
+    private Slider slopeLength;
 
     public void initialize() {
         initializePath();
@@ -117,8 +122,7 @@ public class ApplicationController {
         pt.play();
         pt.setOnFinished(e -> {
             showResult();
-            start.setText("Restart");
-            
+            start.setText("Start");
             reset.setDisable(false);
         });
     }
@@ -152,6 +156,9 @@ public class ApplicationController {
             });
             return;
         }
+        
+        addSlopeSegment();
+        
         // Countdown
         countdown.setText("3");
         countdown.setOpacity(1);
@@ -159,10 +166,8 @@ public class ApplicationController {
         PauseTransition pt2 = new PauseTransition(Duration.seconds(1));
         PauseTransition pt3 = new PauseTransition(Duration.seconds(1));
         PauseTransition pt4 = new PauseTransition(Duration.millis(500));
-        countdowns.add(pt1);
-        countdowns.add(pt2);
-        countdowns.add(pt3);
-        countdowns.add(pt4);
+        
+        
         pt1.playFromStart();
         pt1.setOnFinished(f -> {
             countdown.setText("2");
@@ -180,20 +185,8 @@ public class ApplicationController {
             countdown.setText("");
             animationHandle();
             start.setText("Pause");
-            reset.setDisable(true); 
+            reset.setDisable(true);
         });
-//        if (start.getText().equals("Start")) {
-//            start.setText("Stop");
-//            reset.setDisable(true);
-//        } else {
-//            for (PauseTransition cd : countdowns) {
-//                cd.pause();
-//            }
-//            countdown.setOpacity(0);
-//            start.setText("Start");
-//            reset.setDisable(false);
-//        }
-        
     }
 
     public void showResult() {
@@ -222,4 +215,25 @@ public class ApplicationController {
         resultPane.setOpacity(0);
     }
 
+    private void addSlopeSegment() {
+        double angleDeg = slopeAngle.getValue();   
+        double length   = slopeLength.getValue();
+
+        double angleRad = Math.toRadians(angleDeg);
+        double dx = length * Math.cos(angleRad); 
+        double dy = -length * Math.sin(angleRad);  
+
+        double startX = lastX;
+        double startY = lastY;
+
+        double endX = startX + dx;
+        double endY = startY + dy;
+        
+        path.getElements().add(new LineTo(endX, endY));
+        invispath.getElements().add(new LineTo(endX + 15, endY - 15));
+        
+        lastX = endX;
+        lastY = endY;
+    }
+    
 }
