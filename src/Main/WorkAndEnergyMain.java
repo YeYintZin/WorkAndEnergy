@@ -22,8 +22,6 @@ public class WorkAndEnergyMain extends Application {
     }
     
     //TODO:
-    // Fix Pause Button (It doesnt pause the animation, it "stops it")
-    // Fix Start Button when resuming the animation (it just starts a new animation, while leaving the old animation present)
     // Make the ball slide off once its over (depending on velocity), then display the result screen
     // Fix the way the ball follows the path (Initial start, ball is on the line, acceleration, LOW PRIORITY)
     // Implement the result screen (Initial Energy (Potential Energy), Final velocity)

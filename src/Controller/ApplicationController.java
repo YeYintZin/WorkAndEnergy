@@ -2,11 +2,13 @@ package Controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.animation.Animation;
 import javafx.animation.PathTransition;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -16,7 +18,7 @@ import javafx.scene.shape.Path;
 import javafx.util.Duration;
 
 public class ApplicationController {
-
+    private PathTransition pt;
     private int pathCount;
     private Path path = new Path();
     private Path invispath = new Path();
@@ -42,6 +44,10 @@ public class ApplicationController {
     private Label countdown;
     @FXML
     private Label errorLabel;
+    @FXML
+    private Slider slopeAngle;
+    @FXML
+    private Slider slopeLength;
 
     public void initialize() {
         initializePath();
@@ -52,17 +58,6 @@ public class ApplicationController {
                 return;
             }
             pathCountLabel.setText("Path required: " + (6 - pathCount));
-        });
-        // Making the path
-        lineButton.setOnAction(e -> {
-            extendPath();
-        });
-        // Start the simulation
-        start.setOnAction(e -> {
-            startHandle();
-        });
-        reset.setOnAction(e -> {
-            resetHandle();
         });
     }
 
@@ -120,17 +115,36 @@ public class ApplicationController {
         ball.setFill(null);
         application.getChildren().add(ball);
 
-        PathTransition pt = new PathTransition();
+        pt = new PathTransition();
         pt.setDuration(Duration.seconds(5));
         pt.setPath(invispath);
         pt.setNode(ball);
         pt.play();
         pt.setOnFinished(e -> {
             showResult();
+            start.setText("Start");
+            reset.setDisable(false);
         });
     }
-
+    
+    public void pauseAnimation() {
+        pt.pause();
+    }
+    
     public void startHandle() {
+        if (start.getText().equals("Pause")) {
+            pauseAnimation();
+            start.setText("Start");
+            return;
+        }
+        
+        if (pt != null && pt.getStatus() == Animation.Status.PAUSED) {
+            pt.play();
+            start.setText("Pause");
+            reset.setDisable(true);
+            return;
+        }
+        
         // If path isnt complete
         if (pathCount != 7) {
             errorLabel.setText("Path not complete!");
@@ -142,6 +156,9 @@ public class ApplicationController {
             });
             return;
         }
+        
+        addSlopeSegment();
+        
         // Countdown
         countdown.setText("3");
         countdown.setOpacity(1);
@@ -149,10 +166,8 @@ public class ApplicationController {
         PauseTransition pt2 = new PauseTransition(Duration.seconds(1));
         PauseTransition pt3 = new PauseTransition(Duration.seconds(1));
         PauseTransition pt4 = new PauseTransition(Duration.millis(500));
-        countdowns.add(pt1);
-        countdowns.add(pt2);
-        countdowns.add(pt3);
-        countdowns.add(pt4);
+        
+        
         pt1.playFromStart();
         pt1.setOnFinished(f -> {
             countdown.setText("2");
@@ -169,18 +184,9 @@ public class ApplicationController {
         pt4.setOnFinished(f -> {
             countdown.setText("");
             animationHandle();
-        });
-        if (start.getText().equals("Start")) {
-            start.setText("Stop");
+            start.setText("Pause");
             reset.setDisable(true);
-        } else {
-            for (PauseTransition cd : countdowns) {
-                cd.pause();
-            }
-            countdown.setOpacity(0);
-            start.setText("Start");
-            reset.setDisable(false);
-        }
+        });
     }
 
     public void showResult() {
@@ -189,6 +195,7 @@ public class ApplicationController {
     }
 
     public void resetHandle() {
+        start.setText("Start");
         path.getElements().clear();
         invispath.getElements().clear();
         application.getChildren().removeIf(n -> n instanceof Circle);
@@ -208,4 +215,25 @@ public class ApplicationController {
         resultPane.setOpacity(0);
     }
 
+    private void addSlopeSegment() {
+        double angleDeg = slopeAngle.getValue();   
+        double length   = slopeLength.getValue();
+
+        double angleRad = Math.toRadians(angleDeg);
+        double dx = length * Math.cos(angleRad); 
+        double dy = -length * Math.sin(angleRad);  
+
+        double startX = lastX;
+        double startY = lastY;
+
+        double endX = startX + dx;
+        double endY = startY + dy;
+        
+        path.getElements().add(new LineTo(endX, endY));
+        invispath.getElements().add(new LineTo(endX + 15, endY - 15));
+        
+        lastX = endX;
+        lastY = endY;
+    }
+    
 }
