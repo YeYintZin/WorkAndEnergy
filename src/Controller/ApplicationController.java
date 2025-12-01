@@ -32,34 +32,34 @@ public class ApplicationController {
     private List<Circle> container = new ArrayList<>();
     private boolean slopeAdded = false;
     private Timeline timeline;
-    private long startTime;
+    public long startTime;
 
     @FXML
-    private Label timer;
+    public Label timer;
     @FXML
-    private Pane application;
+    public Pane application;
     @FXML
-    private Button lineButton;
+    public Button lineButton;
     @FXML
-    private Label pathCountLabel;
+    public Label pathCountLabel;
     @FXML
-    private Pane resultPane;
+    public Pane resultPane;
     @FXML
-    private Label resultLabel;
+    public Label resultLabel;
     @FXML
-    private Button reset;
+    public Button reset;
     @FXML
-    private Button start;
+    public Button start;
     @FXML
-    private Label countdown;
+    public Label countdown;
     @FXML
-    private Label errorLabel;
+    public Label errorLabel;
     @FXML
-    private Slider slopeAngle;
+    public Slider slopeAngle;
     @FXML
-    private Slider slopeLength;
+    public Slider slopeLength;
     @FXML
-    private TextField massTextField;
+    public TextField massTextField;
 
     /**
      * Initializes the controller state and sets up validation for the mass input.
