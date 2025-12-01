@@ -10,16 +10,17 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.scene.shape.PathElement;
 import javafx.util.Duration;
 
 public class ApplicationController {
-
     private PathTransition pt;
     private int pathCount;
     private Path path = new Path();
@@ -28,6 +29,7 @@ public class ApplicationController {
     private double lastY = -1;
     private List<Double> finalCoordinate = new ArrayList<>();
     private List<Circle> container = new ArrayList<>();
+    private boolean slopeAdded = false;
 
     @FXML
     private Pane application;
@@ -51,6 +53,8 @@ public class ApplicationController {
     private Slider slopeAngle;
     @FXML
     private Slider slopeLength;
+    @FXML
+    private TextField massTextField;
 
     public void initialize() {
         initializePath();
@@ -62,6 +66,24 @@ public class ApplicationController {
             }
             pathCountLabel.setText("Path required: " + (6 - pathCount));
         });
+        
+        start.setDisable(true);
+
+        massTextField.textProperty().addListener((obs, oldText, newText) -> {
+        if (newText.trim().isEmpty()) {
+            start.setDisable(true);
+            errorLabel.setText("");
+        } else {
+            try {
+                Double.parseDouble(newText);
+                start.setDisable(false);
+                errorLabel.setText("");
+            } catch (NumberFormatException e) {
+                start.setDisable(true);
+                errorLabel.setText("Mass must be a number!");
+            }
+        }
+    });
     }
 
     public void initializePath() {
@@ -110,27 +132,34 @@ public class ApplicationController {
     }
 
     public void animationHandle() {
+        if (container.size() > 0) {
+            container.clear();
+        }
+        
         Circle ball = new Circle();
         ball.setRadius(20);
         ball.setStroke(Color.BLACK);
         ball.setFill(null);
         application.getChildren().add(ball);
         container.add(ball);
-
+        
+        Ball ball2 = new Ball(finalCoordinate, Double.parseDouble(massTextField.getText()));
         pt = new PathTransition();
         pt.setDuration(Duration.seconds(2));
         pt.setPath(invispath);
         pt.setNode(ball);
-        pt.play();
+        projectileAnimation(25, ball2);
+        pt.playFromStart();
         pt.setOnFinished(e -> {
-            projectileAnimation(25);
+            showResult(ball2);
+            start.setText("Start");
+            reset.setDisable(false);
         });
     }
 
-    public void projectileAnimation(double totalTime) {
+    public void projectileAnimation(double totalTime, Ball ball) {
         double x0 = finalCoordinate.get(0);
         double y0 = finalCoordinate.get(1);
-        Ball ball = new Ball(finalCoordinate);
         double vx = ball.getVelocityX();
         double vy = ball.getVelocityY();
         double g = 9.8;
@@ -143,18 +172,15 @@ public class ApplicationController {
             double t = i * dt;
             double x = x0 + vx * t;
             double y = y0 + vy * t + 0.5 * g * t * t;
-            curvePath.getElements().add(new LineTo(x, y));
+            invispath.getElements().add(new LineTo(x, y));
         }
         pt = new PathTransition();
         pt.setDuration(Duration.seconds(5));
-        pt.setPath(curvePath);
-        pt.setNode(container.getFirst());
-        pt.play();
-        pt.setOnFinished(e -> {
-            showResult(ball);
-            start.setText("Start");
-            reset.setDisable(false);
-        });
+        pt.setPath(invispath);
+        if (!container.isEmpty()) {
+            pt.setNode(container.get(0)); 
+        }
+
     }
 
     public void pauseAnimation() {
@@ -175,6 +201,10 @@ public class ApplicationController {
             return;
         }
 
+        if (pt != null) {
+            pt.stop();
+        }
+
         // If path isnt complete
         if (pathCount != 7) {
             errorLabel.setText("Path not complete!");
@@ -187,7 +217,10 @@ public class ApplicationController {
             return;
         }
 
-        addSlopeSegment();
+        if (!slopeAdded) {
+            addSlopeSegment();
+            slopeAdded = true;
+        }
 
         // Countdown
         countdown.setText("3");
@@ -228,24 +261,44 @@ public class ApplicationController {
     }
 
     public void resetHandle() {
+        if (pt != null) {
+            pt.stop();
+            pt = null;
+        }
+        
         start.setText("Start");
+        lineButton.setDisable(false);
+        
         path.getElements().clear();
         invispath.getElements().clear();
-        application.getChildren().removeIf(n -> n instanceof Circle);
+        
+        lastX = 50;
+        lastY = 100;
         pathCount = 0;
+        
+        application.getChildren().removeIf(n -> n instanceof Circle);
+        container.clear();
+        
         path.getElements().add(new MoveTo(50, 100));
         invispath.getElements().add(new MoveTo(50, 75));
+       
         Circle newStart = new Circle(50, 100, 3, Color.BLACK);
         application.getChildren().add(newStart);
+        
         Circle invisnewStart = new Circle(50, 75, 3, Color.BLACK);
         invisnewStart.setOpacity(0);
         application.getChildren().add(invisnewStart);
-        lastX = 50;
-        lastY = 100;
-        lineButton.setDisable(false);
+        
+        
+        
         countdown.setOpacity(0);
+        finalCoordinate.clear();
         pathCountLabel.setText("Path required: " + (7 - pathCount));
         resultPane.setOpacity(0);
+        massTextField.clear();
+        slopeAngle.setValue(0);
+        slopeLength.setValue(0);
+        slopeAdded = false;
     }
 
     private void addSlopeSegment() {
@@ -271,5 +324,5 @@ public class ApplicationController {
         lastX = endX;
         lastY = endY;
     }
-
+    
 }

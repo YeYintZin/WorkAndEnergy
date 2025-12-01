@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -13,16 +14,16 @@
    <children>
       <HBox prefHeight="600.0" prefWidth="900.0">
          <children>
-            <Pane prefHeight="200.0" prefWidth="150.0" style="-fx-border-color: black;">
+            <Pane prefHeight="200.0" prefWidth="150.0" style="-fx-border-color: black; -fx-background-color: #FFE0FF;">
                <children>
-                  <Button fx:id="reset" layoutX="31.0" layoutY="500.0" mnemonicParsing="false" onAction="#resetHandle" prefHeight="56.0" prefWidth="88.0" text="Reset">
+                  <Button fx:id="reset" layoutX="31.0" layoutY="500.0" mnemonicParsing="false" onAction="#resetHandle" prefHeight="56.0" prefWidth="88.0" style="-fx-background-color: #C7FFC7;" text="Reset">
                      <font>
-                        <Font size="23.0" />
+                        <Font name="System Bold" size="18.0" />
                      </font>
                   </Button>
-                  <Button fx:id="start" layoutX="31.0" layoutY="425.0" mnemonicParsing="false" onAction="#startHandle" text="Start">
+                  <Button fx:id="start" layoutX="31.0" layoutY="425.0" mnemonicParsing="false" onAction="#startHandle" prefHeight="56.0" prefWidth="88.0" style="-fx-background-color: #C7FFC7;" text="Start">
                      <font>
-                        <Font size="26.0" />
+                        <Font name="System Bold" size="18.0" />
                      </font>
                   </Button>
                   <Button fx:id="lineButton" layoutX="38.0" layoutY="61.0" mnemonicParsing="false" onAction="#extendPath" prefHeight="75.0" prefWidth="75.0" style="-fx-background-color: lime; -fx-text-fill: white;" text="\\">
@@ -39,16 +40,18 @@
                   <Label layoutX="43.0" layoutY="353.0" text="Slope Angle" />
                   <Slider fx:id="slopeLength" layoutX="5.0" layoutY="317.0" majorTickUnit="10.0" max="80.0" min="30.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" />
                   <Label layoutX="43.0" layoutY="300.0" text="Slope Length" />
+                  <TextField fx:id="massTextField" layoutX="20.0" layoutY="268.0" prefHeight="25.0" prefWidth="109.0" />
+                  <Label layoutX="52.0" layoutY="251.0" text="Mass (kg)" />
                </children>
                <HBox.margin>
                   <Insets />
                </HBox.margin>
             </Pane>
-            <Pane fx:id="application" prefHeight="200.0" prefWidth="750.0" style="-fx-border-color: black;">
+            <Pane fx:id="application" prefHeight="200.0" prefWidth="750.0" style="-fx-border-color: black; -fx-background-color: lightblue;">
                <children>
-                  <Pane fx:id="resultPane" layoutX="350.0" layoutY="400.0" opacity="0.0" prefHeight="200.0" prefWidth="400.0" style="-fx-border-color: black; -fx-background-color: white;">
+                  <Pane fx:id="resultPane" layoutY="499.0" opacity="0.0" prefHeight="101.0" prefWidth="750.0" style="-fx-border-color: black; -fx-background-color: white;">
                      <children>
-                        <Label fx:id="resultLabel" layoutX="10.0" prefHeight="111.0" prefWidth="390.0" text="Results:" />
+                        <Label fx:id="resultLabel" layoutX="8.0" prefHeight="101.0" prefWidth="742.0" text="Results:" />
                      </children>
                   </Pane>
                   <Label fx:id="countdown" layoutX="300.0" layoutY="230.0" opacity="0.0" text="3" textAlignment="CENTER">

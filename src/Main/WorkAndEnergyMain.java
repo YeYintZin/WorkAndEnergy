@@ -24,7 +24,4 @@ public class WorkAndEnergyMain extends Application {
     //TODO:
     // Documentation 
     // IMPORTANT BUG FIX: RESET/START and the way they interact
-    // Implement a place where user can input mass
-    // Clean code cuz im a bum
-    
 }

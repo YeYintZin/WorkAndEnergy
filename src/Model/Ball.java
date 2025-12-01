@@ -7,9 +7,11 @@ public class Ball {
     private double velocityX;
     private double velocityY;
     private List<Double> finalCoordinate;
+    private double mass;
 
-    public Ball(List<Double> finalCoordinate) {
+    public Ball(List<Double> finalCoordinate, double mass) {
         this.finalCoordinate = finalCoordinate;
+        this.mass = mass;
     }
 
     public double findHeight() {
@@ -17,7 +19,7 @@ public class Ball {
     }
     
     public double findEnergy() {
-        return findHeight() * 9.8;
+        return findHeight() * 9.8 * mass;
     }
 
     public void setVelocity() {
