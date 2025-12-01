@@ -66,14 +66,6 @@ public class ApplicationController {
      */
     public void initialize() {
         initializePath();
-//        application.setOnMouseReleased(e -> {
-//            if (pathCount == 7) {
-//                pathCountLabel.setText("Path required: " + 0);
-//                return;
-//            }
-//            pathCountLabel.setText("Path required: " + (6 - pathCount));
-//        });
-        
         start.setDisable(true);
 
         //Mass input listener
@@ -109,7 +101,7 @@ public class ApplicationController {
         lastY = 100;
         //
         invispath.setStroke(Color.AQUAMARINE);
-        invispath.setOpacity(0);
+//        invispath.setOpacity(0);
         invispath.setStrokeWidth(3);
         invispath.setFill(null);
         application.getChildren().add(invispath);
@@ -172,6 +164,7 @@ public class ApplicationController {
         pt.setOnFinished(e -> {
             showResult(ball2);
             start.setText("Start");
+            start.setDisable(true);
             reset.setDisable(false);
         });
     }
@@ -199,7 +192,7 @@ public class ApplicationController {
             invispath.getElements().add(new LineTo(x, y));
         }
         pt = new PathTransition();
-        pt.setDuration(Duration.seconds(5));
+        pt.setDuration(Duration.seconds(7));
         pt.setPath(invispath);
         if (!container.isEmpty()) {
             pt.setNode(container.get(0)); 
@@ -235,17 +228,7 @@ public class ApplicationController {
         if (pt != null) {
             pt.stop();
         }
-        
-        startTime = System.currentTimeMillis(); //timer
-        timeline = new Timeline(new javafx.animation.KeyFrame(Duration.millis(100),event -> {
-                    long now = System.currentTimeMillis();
-                    double elapsedSeconds = (now - startTime) / 1000.0;
-                    timer.setText(String.format("%.2f s", elapsedSeconds));
-                }
-            )
-        );
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+
 
         // If path isnt complete
         if (pathCount != 7) {
@@ -312,8 +295,7 @@ public class ApplicationController {
         resultLabel.setText("Results: \n"
                 + "Velocity in x: " + (Math.round(ball.getVelocityX() * 100)) / 100.00 + " pixels/s \n"  
                 + "Velocity in y: " + (Math.round(ball.getVelocityY() * 100)) / 100.00 +" pixels/s \n" 
-                + "Initial and Final Mechanical energy of the system: " + (Math.round(ball.findEnergy() * 100)) / 100.00  + " J\n"
-                + "Elapsed time: " + elapsed + " s");
+                + "Initial and Final Mechanical energy of the system: " + (Math.round(ball.findEnergy() * 100)) / 100.00  + " J\n");
     }
 
     @FXML
@@ -321,6 +303,7 @@ public class ApplicationController {
      * Handles button reset, resets everything when button is clicked.
      */
     public void resetHandle() {
+        start.setDisable(false);
         if (pt != null) {
             pt.stop();
             pt = null;
@@ -357,7 +340,7 @@ public class ApplicationController {
         slopeAngle.setValue(0);
         slopeLength.setValue(0);
         slopeAdded = false;
-        timer.setText("0.00 s");
+//        timer.setText("0.00 s");
     }
 
     /**
@@ -381,7 +364,7 @@ public class ApplicationController {
         finalCoordinate.add(angleDeg);
 
         path.getElements().add(new LineTo(endX, endY));
-        invispath.getElements().add(new LineTo(endX, endY - 15));
+        invispath.getElements().add(new LineTo(endX, endY));
 
         lastX = endX;
         lastY = endY;
