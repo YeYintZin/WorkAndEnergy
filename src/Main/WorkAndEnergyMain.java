@@ -20,8 +20,4 @@ public class WorkAndEnergyMain extends Application {
         stage.setScene(scene);
         stage.show();
     }
-    
-    //TODO:
-    // Documentation 
-    // IMPORTANT BUG FIX: RESET/START and the way they interact
 }

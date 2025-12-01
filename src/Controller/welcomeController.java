@@ -34,6 +34,9 @@ public class welcomeController {
 
     }    
     
+    /**
+     * Switches to Application controller when play button is clicked.
+     */
     public void switchToApplication() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/View/application.fxml"));

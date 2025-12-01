@@ -6,6 +6,7 @@ import java.util.List;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
 import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -30,7 +31,11 @@ public class ApplicationController {
     private List<Double> finalCoordinate = new ArrayList<>();
     private List<Circle> container = new ArrayList<>();
     private boolean slopeAdded = false;
+    private Timeline timeline;
+    private long startTime;
 
+    @FXML
+    private Label timer;
     @FXML
     private Pane application;
     @FXML
@@ -56,9 +61,11 @@ public class ApplicationController {
     @FXML
     private TextField massTextField;
 
+    /**
+     * Initializes the controller state and sets up validation for the mass input.
+     */
     public void initialize() {
         initializePath();
-        // Keeping count of the path
         application.setOnMouseReleased(e -> {
             if (pathCount == 7) {
                 pathCountLabel.setText("Path required: " + 0);
@@ -69,6 +76,7 @@ public class ApplicationController {
         
         start.setDisable(true);
 
+        //Mass input listener
         massTextField.textProperty().addListener((obs, oldText, newText) -> {
         if (newText.trim().isEmpty()) {
             start.setDisable(true);
@@ -83,9 +91,12 @@ public class ApplicationController {
                 errorLabel.setText("Mass must be a number!");
             }
         }
-    });
+        });
     }
 
+    /**
+     * Initializes path for the ball.
+     */
     public void initializePath() {
         path.setStroke(Color.BLACK);
         path.setStrokeWidth(3);
@@ -107,6 +118,9 @@ public class ApplicationController {
         application.getChildren().add(startinvisDot);
     }
 
+    /**
+     * Void method that extends path from each click.
+     */
     public void extendPath() {
         lineButton.setDisable(true);
         if (pathCount >= 7) {
@@ -131,6 +145,9 @@ public class ApplicationController {
         });
     }
 
+    /**
+     * Handles the path transition of the ball.
+     */
     public void animationHandle() {
         if (container.size() > 0) {
             container.clear();
@@ -139,7 +156,7 @@ public class ApplicationController {
         Circle ball = new Circle();
         ball.setRadius(20);
         ball.setStroke(Color.BLACK);
-        ball.setFill(null);
+        ball.setFill(Color.WHITE);
         application.getChildren().add(ball);
         container.add(ball);
         
@@ -157,6 +174,11 @@ public class ApplicationController {
         });
     }
 
+    /**
+     * 
+     * @param totalTime 
+     * @param ball the ball object
+     */
     public void projectileAnimation(double totalTime, Ball ball) {
         double x0 = finalCoordinate.get(0);
         double y0 = finalCoordinate.get(1);
@@ -180,13 +202,20 @@ public class ApplicationController {
         if (!container.isEmpty()) {
             pt.setNode(container.get(0)); 
         }
-
     }
 
+    /**
+     * Pauses animation.
+     */
     public void pauseAnimation() {
         pt.pause();
     }
-
+    
+    @FXML
+    /**
+     * Handles start button, when clicked, it starts the program 
+     * with the ball falling down the slope into projectile motion.
+     */
     public void startHandle() {
         if (start.getText().equals("Pause")) {
             pauseAnimation();
@@ -204,6 +233,17 @@ public class ApplicationController {
         if (pt != null) {
             pt.stop();
         }
+        
+        startTime = System.currentTimeMillis();
+        timeline = new Timeline(new javafx.animation.KeyFrame(Duration.millis(100),event -> {
+                    long now = System.currentTimeMillis();
+                    double elapsedSeconds = (now - startTime) / 1000.0;
+                    timer.setText(String.format("%.2f s", elapsedSeconds));
+                }
+            )
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
 
         // If path isnt complete
         if (pathCount != 7) {
@@ -245,21 +285,38 @@ public class ApplicationController {
         });
         pt4.setOnFinished(f -> {
             countdown.setText("");
+            startTime = System.currentTimeMillis(); // start timer
             animationHandle();
             start.setText("Pause");
             reset.setDisable(true);
         });
     }
-
+    
+    /**
+     * Shows the result of the velocity x and y.
+     * @param ball the object ball to find energy
+     */
     public void showResult(Ball ball) {
+        long endTime = System.currentTimeMillis();
+        long elapsed = (endTime - startTime) / 1000;
+        
+        if (timeline != null) {
+            timeline.stop();
+        }
+        
         resultPane.setOpacity(1);
         resultPane.toFront();
         resultLabel.setText("Results: \n"
                 + "Velocity in x: " + (Math.round(ball.getVelocityX() * 100)) / 100.00 + " pixels/s \n"  
                 + "Velocity in y: " + (Math.round(ball.getVelocityY() * 100)) / 100.00 +" pixels/s \n" 
-                + "Initial and Final Mechanical energy of the system: " + (Math.round(ball.findEnergy() * 100)) / 100.00  + " J");
+                + "Initial and Final Mechanical energy of the system: " + (Math.round(ball.findEnergy() * 100)) / 100.00  + " J\n"
+                + "Elapsed time: " + elapsed + " s");
     }
 
+    @FXML
+    /**
+     * Handles button reset, resets everything when button is clicked.
+     */
     public void resetHandle() {
         if (pt != null) {
             pt.stop();
@@ -289,8 +346,6 @@ public class ApplicationController {
         invisnewStart.setOpacity(0);
         application.getChildren().add(invisnewStart);
         
-        
-        
         countdown.setOpacity(0);
         finalCoordinate.clear();
         pathCountLabel.setText("Path required: " + (7 - pathCount));
@@ -299,8 +354,12 @@ public class ApplicationController {
         slopeAngle.setValue(0);
         slopeLength.setValue(0);
         slopeAdded = false;
+        timer.setText("0.00 s");
     }
 
+    /**
+     * Adds slope based on slope angle and slope length values of the sliders.
+     */
     private void addSlopeSegment() {
         double angleDeg = slopeAngle.getValue();
         double length = slopeLength.getValue();
