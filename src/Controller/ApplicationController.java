@@ -101,7 +101,7 @@ public class ApplicationController {
         lastY = 100;
         //
         invispath.setStroke(Color.AQUAMARINE);
-//        invispath.setOpacity(0);
+        invispath.setOpacity(0);
         invispath.setStrokeWidth(3);
         invispath.setFill(null);
         application.getChildren().add(invispath);
