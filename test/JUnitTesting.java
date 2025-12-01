@@ -33,8 +33,7 @@ public class JUnitTesting {
     
     @BeforeEach
     public void setUp() {
-        // Initialize JavaFX runtime
-        new JFXPanel(); // This initializes JavaFX toolkit
+        new JFXPanel(); 
 
         controller = new ApplicationController();
 
@@ -77,13 +76,12 @@ public class JUnitTesting {
     
     @Test
     public void testBallSetVelocity() {
-        // Mock the finalCoordinate: {x, y, angle}
         List<Double> finalCoordinate = new ArrayList<>();
-        finalCoordinate.add(0.0);  // x (ignored)
-        finalCoordinate.add(110.0); // y = 110 → height = 10
-        finalCoordinate.add(30.0);  // angle in degrees
+        finalCoordinate.add(0.0); 
+        finalCoordinate.add(110.0);     
+        finalCoordinate.add(30.0);
 
-        Ball ball = new Ball(finalCoordinate, 1.0); // mass = 1 kg
+        Ball ball = new Ball(finalCoordinate, 1.0); 
         ball.setVelocity();
 
         double expectedSpeed = Math.sqrt(2 * 9.8 * 10); // sqrt(2 * g * h)
@@ -99,14 +97,14 @@ public class JUnitTesting {
         Ball ball = new Ball(Arrays.asList(0.0, 15.0, 30.0), 2.0); 
         
         ball = new Ball(Arrays.asList(0.0, 120.0, 30.0), 2.0); 
-        double expectedEnergy = 20 * 9.8 * 2; // m * g * h
+        double expectedEnergy = 20 * 9.8 * 2; 
         assertEquals(expectedEnergy, ball.findEnergy(), 0.01);
     }
     
     @Test
     public void testElapsedTimeUpdates() throws Exception {
         controller.startTime = System.currentTimeMillis();
-        Thread.sleep(150); // simulate 0.15 seconds
+        Thread.sleep(150); 
         long now = System.currentTimeMillis();
         double elapsedSeconds = (now - controller.startTime) / 1000.0;
         controller.timer.setText(String.format("%.2f s", elapsedSeconds));

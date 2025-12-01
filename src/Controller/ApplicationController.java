@@ -66,13 +66,13 @@ public class ApplicationController {
      */
     public void initialize() {
         initializePath();
-        application.setOnMouseReleased(e -> {
-            if (pathCount == 7) {
-                pathCountLabel.setText("Path required: " + 0);
-                return;
-            }
-            pathCountLabel.setText("Path required: " + (6 - pathCount));
-        });
+//        application.setOnMouseReleased(e -> {
+//            if (pathCount == 7) {
+//                pathCountLabel.setText("Path required: " + 0);
+//                return;
+//            }
+//            pathCountLabel.setText("Path required: " + (6 - pathCount));
+//        });
         
         start.setDisable(true);
 
@@ -138,6 +138,8 @@ public class ApplicationController {
             lastY = f.getY();
             //
             invispath.getElements().add(new LineTo(f.getX() + 15, f.getY() - 15));
+            
+            pathCountLabel.setText("Path required: " + (7 - pathCount));
             if (pathCount == 7) {
                 application.setOnMouseClicked(null);
                 lineButton.setStyle("-fx-background-color: lime; -fx-text-fill: white;");
@@ -234,7 +236,7 @@ public class ApplicationController {
             pt.stop();
         }
         
-        startTime = System.currentTimeMillis();
+        startTime = System.currentTimeMillis(); //timer
         timeline = new Timeline(new javafx.animation.KeyFrame(Duration.millis(100),event -> {
                     long now = System.currentTimeMillis();
                     double elapsedSeconds = (now - startTime) / 1000.0;
@@ -257,6 +259,7 @@ public class ApplicationController {
             return;
         }
 
+        //Stops adding slopes if you continue to start without resetting.
         if (!slopeAdded) {
             addSlopeSegment();
             slopeAdded = true;
