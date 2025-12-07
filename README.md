@@ -17,4 +17,4 @@ This project was separated between Le Nguyen Tan Alex and Ye Yint Zin. Ye Yint c
 
 
     *a) Challenges, Solution, and Lessons Learned*
-  
+        -  Challenges Encountered: Our team faced a lot of difficulties during the project. One of the problems was technical issues. Often, we had trouble pulling the code            from Github. It would create problem. So, the only way to actually get the new code from Github was deleting our project and then, cloning it again, which slowed            us down pretty often. Also, the fact that we could get junit to work was also one of the technical problems. Many times our program wouldn't work, so we needed              to fix them. Our team also had poor time management. We couldn't work on it often and it was hard to find the perfect time. So, we had a late start to our                   program which affected the quality of our final result. The fact that one of our teammattes also left, made it harder, because we had more task to separate                  between the both of us.
